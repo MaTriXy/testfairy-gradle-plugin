@@ -1,18 +1,19 @@
 package com.testfairy.plugins.gradle
 
-import org.gradle.api.*
+import org.gradle.api.Project
 
 class TestFairyExtension {
 
 	private String apiKey
-	private Boolean iconWatermark = false
 	private String video = "on"
-	private String videoQuality = "high"
+	private String videoQuality = "medium"
 	private String videoRate = "1.0"
 	private String testersGroups
 	private String maxDuration
 	private String metrics
 	private String comment
+	private String tags
+	private String custom
 	private Boolean notify = true
 	private Boolean autoUpdate = false
 	private Boolean recordOnBackground = false
@@ -29,14 +30,6 @@ class TestFairyExtension {
 
 	String getApiKey() {
 		return apiKey
-	}
-
-	void iconWatermark(Boolean watermark) {
-		this.iconWatermark = watermark
-	}
-
-	Boolean getIconWatermark() {
-		return iconWatermark
 	}
 
 	void video(String video) {
@@ -112,7 +105,7 @@ class TestFairyExtension {
 	}
 
 	void autoUpdate(Boolean value) {
-		this.autoUpdate = value;
+		this.autoUpdate = value
 	}
 
 	Boolean getAutoUpdate() {
@@ -120,19 +113,35 @@ class TestFairyExtension {
 	}
 
 	void recordOnBackground(Boolean value) {
-		this.recordOnBackground = value;
+		this.recordOnBackground = value
 	}
 
 	Boolean getRecordOnBackground() {
-		return recordOnBackground;
+		return recordOnBackground
 	}
 
-    void uploadProguardMapping(Boolean value){
-        this.uploadProguardMapping = value;
-    }
+	void uploadProguardMapping(Boolean value){
+		this.uploadProguardMapping = value
+	}
 
-    Boolean getUploadProguardMapping(){
-        return uploadProguardMapping;
-    }
+	Boolean getUploadProguardMapping(){
+		return uploadProguardMapping;
+	}
+
+	void tags(String value) {
+		this.tags = value
+	}
+
+	String getTags() {
+		return tags
+	}
+
+	void custom(String value) {
+		this.custom = value
+	}
+
+	String getCustom() {
+		return custom
+	}
 }
 

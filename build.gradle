@@ -1,20 +1,26 @@
 apply plugin: 'groovy'
 
 dependencies {
-	compile gradleApi()
-	compile localGroovy()
-	compile 'org.apache.httpcomponents:httpmime:4.2.5'
-	compile 'commons-io:commons-io:2.4'
-	compile 'org.apache.commons:commons-compress:1.9'
+	implementation gradleApi()
+	implementation localGroovy()
+	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'org.apache.httpcomponents:httpmime:4.5.13'
+	implementation 'org.apache.commons:commons-compress:1.21'
+	implementation 'com.android.tools.build:gradle:3.4.3'
 }
 
 apply plugin: 'maven'
 
 group = 'com.testfairy.plugins.gradle'
-version = '1.14'
+
+def pluginVersion = System.getenv('TF_GRADLE_VERSION')
+version = (pluginVersion != null && pluginVersion.length() > 0) ? pluginVersion : "HEAD"
+
+System.out.println("TestFairy Gradle Plugin Version: " + project.version);
 
 repositories {
 	mavenCentral()
+	google()
 }
 
 configurations {
@@ -26,14 +32,23 @@ compileJava {
 	targetCompatibility = 1.6
 }
 
+
+
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: uri('repo'))
+			def pluginVersion2 = System.getenv('TF_GRADLE_VERSION')
+			def version2 = (pluginVersion2 != null && pluginVersion2.length() > 0) ? pluginVersion2 : "HEAD"
+			def repoUrl = version2.equals("HEAD") ? uri('./repo') : uri('./testfairy-maven')
+
+			System.out.println("Version: " + version2)
+			System.out.println("Repo: " + repoUrl)
+
+			repository(url: repoUrl)
 
 			pom.project {
 				name 'TestFairy Uploader Plugin for Gradle'
-				description 'Upload signed builds directly to TestFairy platform.'
+				description 'Upload apps to TestFairy for distribution.'
 				url 'https://www.testfairy.com'
 				inceptionYear '2013'
 
@@ -43,7 +58,7 @@ uploadArchives {
 						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 						distribution 'repo'
 					}
-                		}
+				}
 
 				scm {
 					url "https://github.com/testfairy/testfairy-gradle-plugin.git"

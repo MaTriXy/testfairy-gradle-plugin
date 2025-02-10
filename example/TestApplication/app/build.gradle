@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.example.testapplication"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+apply plugin: 'testfairy'
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+
+        //Enable when testing local plugin
+        maven { url ('../../../repo') }
+        maven { url ('../../../testfairy-maven') }
+        maven { url ('../../../../repo') }
+        maven { url ('../../../../testfairy-maven') }
+
+        //Enable when testing remote release
+//        maven { url 'https://www.testfairy.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.testfairy.plugins.gradle:testfairy:+'
+    }
+}
+
+testfairyConfig {
+    apiKey System.getenv('TF_API_KEY')
+    testersGroups "myself"
+    notify true
+    video "wifi"
+    videoQuality "low"
+    videoRate "2.0"
+    recordOnBackground true
+    serverEndpoint "https://app.testfairy.com"
+    maxDuration "32m"
+    custom "my custom data"
+    tags "alpha,newfeature1,newfeature2"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'testfairy:testfairy-android-sdk:1.+@aar'
+}
